@@ -19,6 +19,7 @@ BLECharacteristic relayControlCharacteristic = BLECharacteristic(relayControlUUI
 
 #define RELAY_ON  (0x01)
 #define RELAY_OFF (0x00)
+#define RELAY_PIN A0
 
 uint8_t           relayState = RELAY_OFF;
 
@@ -45,7 +46,11 @@ void setup() {
   // Create functioning blinky.
   ledBlinkTimer = xTimerCreate(NULL, ms2tick(CFG_ADV_BLINKY_INTERVAL/2), true, NULL, blinky_cb);
   xTimerStart(ledBlinkTimer, 0);
-    
+
+  // Initialize the output pin to the relay.
+  pinMode(RELAY_PIN, OUTPUT);
+  setRelayState(RELAY_OFF);
+  
   // Set the advertised device name (keep it short!)
   Serial.println("Setting Device Name to 'KevinCam'");
   Bluefruit.setName("KevinCam");
@@ -145,7 +150,7 @@ void disconnect_callback(uint16_t conn_handle, uint8_t reason)
 void write_relay_cb(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t offset) {
   Serial.println("Relay data written");
   Serial.println(data[0] ? "ON" : "OFF");
-  relayState = data[0];
+  setRelayState(data[0]);
   updateRelayCharacteristicValue();
   
   // TODO: If turning the relay on, start a 30-second timer to turn it off again.
@@ -157,6 +162,11 @@ void cccd_write_relay_cb(BLECharacteristic& chr, uint16_t cccd_value) {
 
 void updateRelayCharacteristicValue() {
   relayControlCharacteristic.write8(relayState);
+}
+
+void setRelayState(uint8_t newRelayState) {
+  relayState = newRelayState;
+  digitalWrite(RELAY_PIN, newRelayState == 0 ? LOW : HIGH);  
 }
 
 void displayRelayStatus() {
