@@ -24,6 +24,9 @@ uint8_t           relayState = RELAY_OFF;
 
 BLEDis bledis;    // DIS (Device Information Service) helper class instance
 
+#define CFG_ADV_BLINKY_INTERVAL 1000
+TimerHandle_t ledBlinkTimer;
+
 void setup() {
   boolean success;
 
@@ -38,7 +41,11 @@ void setup() {
 
   // Disable automatic BLE connection status on LED.
   Bluefruit.autoConnLed(false);
-  
+
+  // Create functioning blinky.
+  ledBlinkTimer = xTimerCreate(NULL, ms2tick(CFG_ADV_BLINKY_INTERVAL/2), true, NULL, blinky_cb);
+  xTimerStart(ledBlinkTimer, 0);
+    
   // Set the advertised device name (keep it short!)
   Serial.println("Setting Device Name to 'KevinCam'");
   Bluefruit.setName("KevinCam");
@@ -162,4 +169,10 @@ void displayBLEConnectionStatus() {
 
 void setBlueLED(boolean onOff) {
   digitalWrite(LED_BLUE, onOff ? HIGH : LOW);
+}
+
+void blinky_cb(TimerHandle_t xTimer) {
+  if (relayState == 0) {
+    digitalToggle(LED_BUILTIN);
+  }
 }
