@@ -15,6 +15,8 @@ class ViewController: UIViewController {
   var relayCharacteristic: CBCharacteristic?
   
   @IBOutlet weak var toggleCameraButton: UIButton!
+  @IBOutlet weak var connectDisconnectButton: UIButton!
+  
   var cameraOn = false
   
   override func viewDidLoad() {
@@ -39,6 +41,36 @@ class ViewController: UIViewController {
     cameraOn = !cameraOn
     writeRelayCharacteristic(cameraOn)
   }
+  
+  @IBAction func connectDisconnectAction(_ sender: Any) {
+    if let kevinPeripheral = kevinPeripheral {
+      switch kevinPeripheral.state {
+      case .connected, .connecting:
+        disconnect()
+      case .disconnected, .disconnecting:
+        connect(kevinPeripheral)
+      default: ()
+      }
+    }
+  }
+  
+  func configureConnectButton() {
+    DispatchQueue.main.async {
+      switch self.kevinPeripheral?.state {
+      case .connected?, .connecting?:
+        self.connectDisconnectButton.setTitle("Disconnect", for: .normal)
+        self.connectDisconnectButton.setTitleColor(UIColor.white, for: .normal)
+        self.connectDisconnectButton.backgroundColor = UIColor.blue
+        
+      case .disconnected?, .disconnecting?:
+        self.connectDisconnectButton.setTitle("Connect", for: .normal)
+        self.connectDisconnectButton.setTitleColor(UIColor.blue, for: .normal)
+        self.connectDisconnectButton.backgroundColor = UIColor.white
+        
+      default: ()
+      }
+    }
+  }
 }
 
 extension ViewController : CBCentralManagerDelegate {
@@ -46,6 +78,10 @@ extension ViewController : CBCentralManagerDelegate {
     centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
   }
 
+  func connect(_ peripheral: CBPeripheral) {
+    centralManager.connect(peripheral, options: nil)
+  }
+  
   func disconnect() {
     if let peripheral = kevinPeripheral {
       centralManager.cancelPeripheralConnection(peripheral)
@@ -80,15 +116,17 @@ extension ViewController : CBCentralManagerDelegate {
   
   func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber)  {
     kevinPeripheral = peripheral
-    central.connect(peripheral, options: nil)
+    connect(peripheral)
   }
   
   func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
     peripheral.delegate = self
     peripheral.discoverServices([kevinServiceUUID])
+    configureConnectButton()
   }
   
   func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+    configureConnectButton()
   }
 }
 
@@ -102,6 +140,12 @@ extension ViewController : CBPeripheralDelegate {
   func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
     relayCharacteristic = service.characteristics?[0]
     toggleCameraButton.isEnabled = (relayCharacteristic != nil)
+  }
+  
+  func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+    if characteristic == relayCharacteristic {
+      
+    }
   }
   
   func writeRelayCharacteristic(_ cameraOn: Bool) {
