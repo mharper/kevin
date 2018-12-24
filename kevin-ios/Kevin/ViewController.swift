@@ -73,21 +73,7 @@ class ViewController: UIViewController, Kevinable {
   }
 }
 
-extension ViewController : CBCentralManagerDelegate {
-  func initBluetooth() {
-    centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
-  }
-
-  func connect(_ peripheral: CBPeripheral) {
-    centralManager.connect(peripheral, options: nil)
-  }
-  
-  func disconnect() {
-    if let peripheral = kevinPeripheral {
-      centralManager.cancelPeripheralConnection(peripheral)
-    }
-  }
-  
+extension ViewController : CBCentralManagerDelegate {  
   func centralManagerDidUpdateState(_ central: CBCentralManager) {
     switch central.state {
       
@@ -148,9 +134,4 @@ extension ViewController : CBPeripheralDelegate {
     }
   }
   
-  func writeRelayCharacteristic(_ cameraOn: Bool) {
-    if let characteristic = relayCharacteristic {
-      kevinPeripheral?.writeValue(Data(bytes:[cameraOn ? UInt8(0) : UInt8(1)]), for: characteristic, type: .withResponse)
-    }
-  }
 }
