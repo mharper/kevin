@@ -9,7 +9,7 @@
 import UIKit
 import CoreBluetooth
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, Kevinable {
   var centralManager: CBCentralManager!
   var kevinPeripheral: CBPeripheral?
   var relayCharacteristic: CBCharacteristic?
