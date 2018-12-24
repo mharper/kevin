@@ -15,6 +15,7 @@ protocol Kevinable : class {
   var relayCharacteristic: CBCharacteristic? { get set }
   
   func initBluetooth()
+  func scanForKevin()
   func connect(_ peripheral: CBPeripheral)
   func disconnect()
   func writeRelayCharacteristic(_ cameraOn: Bool)
@@ -23,6 +24,10 @@ protocol Kevinable : class {
 extension Kevinable where Self : CBCentralManagerDelegate {
   func initBluetooth() {
     centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
+  }
+  
+  func scanForKevin() {
+    centralManager.scanForPeripherals(withServices: [kevinServiceUUID], options:[CBCentralManagerScanOptionAllowDuplicatesKey: false])
   }
   
   func connect(_ peripheral: CBPeripheral) {

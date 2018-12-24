@@ -33,10 +33,6 @@ class ViewController: UIViewController, Kevinable {
     disconnect()
   }
   
-  func scanForKevin() {
-    centralManager.scanForPeripherals(withServices: [kevinServiceUUID], options:[CBCentralManagerScanOptionAllowDuplicatesKey: false])
-  }
-  
   @IBAction func toggleAction(_ sender: Any) {
     cameraOn = !cameraOn
     writeRelayCharacteristic(cameraOn)
