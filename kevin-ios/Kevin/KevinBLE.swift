@@ -10,3 +10,4 @@ import Foundation
 import CoreBluetooth
 
 let kevinServiceUUID = CBUUID(string: "A2F6EFEC-C2B1-7194-B247-7E5C3B754D5E")
+let kevinRelayCharacteristicUUID = CBUUID(string: "A2F6EFEC-0001-7194-B247-7E5C3B754D5E")
