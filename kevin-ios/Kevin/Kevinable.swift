@@ -42,7 +42,7 @@ extension Kevinable where Self : CBCentralManagerDelegate {
   
   func writeRelayCharacteristic(_ cameraOn: Bool) {
     if let characteristic = relayCharacteristic {
-      kevinPeripheral?.writeValue(Data(bytes:[cameraOn ? UInt8(0) : UInt8(1)]), for: characteristic, type: .withResponse)
+      kevinPeripheral?.writeValue(Data(bytes:[cameraOn ? UInt8(1) : UInt8(0)]), for: characteristic, type: .withResponse)
     }
   }
 }

@@ -96,11 +96,6 @@ extension ViewController : CBCentralManagerDelegate {
     }
   }
   
-  func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber)  {
-    kevinPeripheral = peripheral
-    connect(peripheral)
-  }
-  
   func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
     peripheral.delegate = self
     peripheral.discoverServices([kevinServiceUUID])
@@ -109,6 +104,11 @@ extension ViewController : CBCentralManagerDelegate {
   
   func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
     configureConnectButton()
+  }
+  
+  func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber)  {
+    kevinPeripheral = peripheral
+    connect(peripheral)
   }
 }
 
