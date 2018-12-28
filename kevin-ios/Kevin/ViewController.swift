@@ -9,50 +9,55 @@
 import UIKit
 import CoreBluetooth
 
-class ViewController: UIViewController, Kevinable {
-  var centralManager: CBCentralManager!
-  var kevinPeripheral: CBPeripheral?
-  var relayCharacteristic: CBCharacteristic?
-  
+class ViewController: UIViewController {
   @IBOutlet weak var toggleCameraButton: UIButton!
   @IBOutlet weak var connectDisconnectButton: UIButton!
   
   var cameraOn = false
   
+  let kevin = Kevin.shared
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-  }
-  
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    initBluetooth()
-  }
-  
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    disconnect()
+    registerForNotifications()
+    configureConnectButton()
   }
   
   @IBAction func toggleAction(_ sender: Any) {
     cameraOn = !cameraOn
-    writeRelayCharacteristic(cameraOn)
+    kevin.writeRelayCharacteristic(cameraOn)
   }
   
   @IBAction func connectDisconnectAction(_ sender: Any) {
-    if let kevinPeripheral = kevinPeripheral {
+    if let kevinPeripheral = kevin.kevinPeripheral {
       switch kevinPeripheral.state {
       case .connected, .connecting:
-        disconnect()
+        kevin.disconnect()
       case .disconnected, .disconnecting:
-        connect(kevinPeripheral)
+        kevin.reconnect()
       default: ()
       }
     }
   }
   
+  func registerForNotifications() {
+    let notificationCenter = NotificationCenter.default
+    notificationCenter.addObserver(forName: Notification.Name.didConnectToKevin, object: nil, queue: nil) { (notification) in
+      self.configureConnectButton()
+      self.configureToggleButton()
+    }
+    notificationCenter.addObserver(forName: Notification.Name.didDisconnectFromKevin, object: nil, queue: nil) { (notification) in
+      self.configureConnectButton()
+      self.configureToggleButton()
+    }
+    notificationCenter.addObserver(forName: Notification.Name.relayValueChanged, object: nil, queue: nil) { (notification) in
+        self.configureToggleButton()
+    }
+  }
+  
   func configureConnectButton() {
     DispatchQueue.main.async {
-      switch self.kevinPeripheral?.state {
+      switch self.kevin.kevinPeripheral?.state {
       case .connected?, .connecting?:
         self.connectDisconnectButton.setTitle("Disconnect", for: .normal)
         self.connectDisconnectButton.setTitleColor(UIColor.white, for: .normal)
@@ -67,67 +72,25 @@ class ViewController: UIViewController, Kevinable {
       }
     }
   }
-}
+  
+  func configureToggleButton() {
+    DispatchQueue.main.async {
+      switch self.kevin.kevinPeripheral?.state {
+      case .connected?:
+        self.toggleCameraButton.isEnabled = true
+        if let relayValue = self.kevin.relayValue, relayValue {
+          self.toggleCameraButton.setTitle("Turn OFF", for: .normal)
+        }
+        else {
+          self.toggleCameraButton.setTitle("Turn ON", for: .normal)
+        }
 
-extension ViewController : CBCentralManagerDelegate {  
-  func centralManagerDidUpdateState(_ central: CBCentralManager) {
-    switch central.state {
-      
-    case .unknown: ()
-      
-    case .resetting: ()
-      
-    case .unsupported:
-      let alert = UIAlertController(title: "Bluetooth Unsupported", message: "Bluetooth is not supported on this device.", preferredStyle: .alert)
-      let okAction = UIAlertAction(title: "Bummer", style: .default, handler: nil)
-      alert.addAction(okAction)
-      present(alert, animated: true, completion: nil)
-      
-    case .unauthorized: ()
-      
-    case .poweredOff: ()
-    let alert = UIAlertController(title: "Bluetooth Turned Off", message: "Please turn Bluetooth on so that the app can scan for beacons.", preferredStyle: .alert)
-    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-    alert.addAction(okAction)
-    present(alert, animated: true, completion: nil)
-      
-    case .poweredOn: ()
-      scanForKevin()
+      case .connecting?, .disconnected?, .disconnecting?:
+        self.toggleCameraButton.isEnabled = false
+        self.toggleCameraButton.setTitle("N/A", for: .normal)
+        
+      default: ()
+      }
     }
   }
-  
-  func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-    peripheral.delegate = self
-    peripheral.discoverServices([kevinServiceUUID])
-    configureConnectButton()
-  }
-  
-  func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-    configureConnectButton()
-  }
-  
-  func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber)  {
-    kevinPeripheral = peripheral
-    connect(peripheral)
-  }
-}
-
-extension ViewController : CBPeripheralDelegate {
-  func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-    if let service = peripheral.services?[0] {
-      peripheral.discoverCharacteristics([kevinRelayCharacteristicUUID], for: service)
-    }
-  }
-  
-  func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-    relayCharacteristic = service.characteristics?[0]
-    toggleCameraButton.isEnabled = (relayCharacteristic != nil)
-  }
-  
-  func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-    if characteristic == relayCharacteristic {
-      
-    }
-  }
-  
 }

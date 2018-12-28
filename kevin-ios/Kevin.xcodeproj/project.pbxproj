@@ -21,7 +21,6 @@
 		D8CC2CFD21D0A8A00058C1F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8CC2CFC21D0A8A00058C1F6 /* Assets.xcassets */; };
 		D8CC2D0D21D0AEDA0058C1F6 /* KevinBLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CC2D0C21D0AEDA0058C1F6 /* KevinBLE.swift */; };
 		D8CC2D0F21D153A90058C1F6 /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CC2D0E21D153A90058C1F6 /* UIView+Helpers.swift */; };
-		D8CC2D1121D178D60058C1F6 /* Kevinable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CC2D1021D178D60058C1F6 /* Kevinable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,7 +84,6 @@
 		D8CC2CFE21D0A8A00058C1F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8CC2D0C21D0AEDA0058C1F6 /* KevinBLE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KevinBLE.swift; sourceTree = "<group>"; };
 		D8CC2D0E21D153A90058C1F6 /* UIView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
-		D8CC2D1021D178D60058C1F6 /* Kevinable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kevinable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,7 +129,6 @@
 			children = (
 				D8CC2CD521D0A89C0058C1F6 /* AppDelegate.swift */,
 				D8CC2CD721D0A89C0058C1F6 /* ViewController.swift */,
-				D8CC2D1021D178D60058C1F6 /* Kevinable.swift */,
 				D8CC2CD921D0A89C0058C1F6 /* Main.storyboard */,
 				D8CC2D0C21D0AEDA0058C1F6 /* KevinBLE.swift */,
 				D8CC2D0E21D153A90058C1F6 /* UIView+Helpers.swift */,
@@ -295,7 +292,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8CC2D1121D178D60058C1F6 /* Kevinable.swift in Sources */,
 				D8CC2CD821D0A89C0058C1F6 /* ViewController.swift in Sources */,
 				D8CC2D0D21D0AEDA0058C1F6 /* KevinBLE.swift in Sources */,
 				D8CC2D0F21D153A90058C1F6 /* UIView+Helpers.swift in Sources */,
