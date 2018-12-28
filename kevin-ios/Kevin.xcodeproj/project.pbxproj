@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D88C8E0A21D5C01400308C5C /* KevinBLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CC2D0C21D0AEDA0058C1F6 /* KevinBLE.swift */; };
 		D8CC2CD621D0A89C0058C1F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CC2CD521D0A89C0058C1F6 /* AppDelegate.swift */; };
 		D8CC2CD821D0A89C0058C1F6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CC2CD721D0A89C0058C1F6 /* ViewController.swift */; };
 		D8CC2CDB21D0A89C0058C1F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8CC2CD921D0A89C0058C1F6 /* Main.storyboard */; };
@@ -234,6 +235,11 @@
 					};
 					D8CC2CF221D0A8A00058C1F6 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes.watchos.extension = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -304,6 +310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8CC2CFB21D0A8A00058C1F6 /* ExtensionDelegate.swift in Sources */,
+				D88C8E0A21D5C01400308C5C /* KevinBLE.swift in Sources */,
 				D8CC2CF921D0A8A00058C1F6 /* InterfaceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
