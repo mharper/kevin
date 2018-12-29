@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D81170E321D689E8003E86CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81170E221D689E8003E86CE /* AppDelegate.swift */; };
+		D81170E521D689E8003E86CE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81170E421D689E8003E86CE /* ViewController.swift */; };
+		D81170E821D689E8003E86CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D81170E621D689E8003E86CE /* Main.storyboard */; };
+		D81170EA21D689E9003E86CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D81170E921D689E9003E86CE /* Assets.xcassets */; };
+		D81170EF21D68A1A003E86CE /* KevinBLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CC2D0C21D0AEDA0058C1F6 /* KevinBLE.swift */; };
 		D88C8E0A21D5C01400308C5C /* KevinBLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CC2D0C21D0AEDA0058C1F6 /* KevinBLE.swift */; };
 		D8CC2CD621D0A89C0058C1F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CC2CD521D0A89C0058C1F6 /* AppDelegate.swift */; };
 		D8CC2CD821D0A89C0058C1F6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CC2CD721D0A89C0058C1F6 /* ViewController.swift */; };
@@ -67,6 +72,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D81170E021D689E7003E86CE /* KevinCam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KevinCam.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D81170E221D689E8003E86CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D81170E421D689E8003E86CE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D81170E721D689E8003E86CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D81170E921D689E9003E86CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D81170EB21D689E9003E86CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8CC2CD221D0A89C0058C1F6 /* Kevin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kevin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8CC2CD521D0A89C0058C1F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8CC2CD721D0A89C0058C1F6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +99,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		D81170DD21D689E7003E86CE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D8CC2CCF21D0A89C0058C1F6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -105,12 +123,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D81170E121D689E8003E86CE /* KevinCam */ = {
+			isa = PBXGroup;
+			children = (
+				D81170E221D689E8003E86CE /* AppDelegate.swift */,
+				D81170E421D689E8003E86CE /* ViewController.swift */,
+				D81170E621D689E8003E86CE /* Main.storyboard */,
+				D81170E921D689E9003E86CE /* Assets.xcassets */,
+				D81170EB21D689E9003E86CE /* Info.plist */,
+			);
+			path = KevinCam;
+			sourceTree = "<group>";
+		};
 		D8CC2CC921D0A89C0058C1F6 = {
 			isa = PBXGroup;
 			children = (
 				D8CC2CD421D0A89C0058C1F6 /* Kevin */,
 				D8CC2CE821D0A89F0058C1F6 /* Kevin WatchKit App */,
 				D8CC2CF721D0A8A00058C1F6 /* Kevin WatchKit Extension */,
+				D81170E121D689E8003E86CE /* KevinCam */,
 				D8CC2CD321D0A89C0058C1F6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -121,6 +152,7 @@
 				D8CC2CD221D0A89C0058C1F6 /* Kevin.app */,
 				D8CC2CE421D0A89F0058C1F6 /* Kevin WatchKit App.app */,
 				D8CC2CF321D0A8A00058C1F6 /* Kevin WatchKit Extension.appex */,
+				D81170E021D689E7003E86CE /* KevinCam.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -153,8 +185,8 @@
 		D8CC2CF721D0A8A00058C1F6 /* Kevin WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				D8CC2CF821D0A8A00058C1F6 /* InterfaceController.swift */,
 				D8CC2CFA21D0A8A00058C1F6 /* ExtensionDelegate.swift */,
+				D8CC2CF821D0A8A00058C1F6 /* InterfaceController.swift */,
 				D8CC2CFC21D0A8A00058C1F6 /* Assets.xcassets */,
 				D8CC2CFE21D0A8A00058C1F6 /* Info.plist */,
 			);
@@ -164,6 +196,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		D81170DF21D689E7003E86CE /* KevinCam */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D81170EE21D689E9003E86CE /* Build configuration list for PBXNativeTarget "KevinCam" */;
+			buildPhases = (
+				D81170DC21D689E7003E86CE /* Sources */,
+				D81170DD21D689E7003E86CE /* Frameworks */,
+				D81170DE21D689E7003E86CE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KevinCam;
+			productName = KevinCam;
+			productReference = D81170E021D689E7003E86CE /* KevinCam.app */;
+			productType = "com.apple.product-type.application";
+		};
 		D8CC2CD121D0A89C0058C1F6 /* Kevin */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D8CC2D0921D0A8A00058C1F6 /* Build configuration list for PBXNativeTarget "Kevin" */;
@@ -227,6 +276,9 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Michael Harper";
 				TargetAttributes = {
+					D81170DF21D689E7003E86CE = {
+						CreatedOnToolsVersion = 10.1;
+					};
 					D8CC2CD121D0A89C0058C1F6 = {
 						CreatedOnToolsVersion = 10.1;
 					};
@@ -259,11 +311,21 @@
 				D8CC2CD121D0A89C0058C1F6 /* Kevin */,
 				D8CC2CE321D0A89F0058C1F6 /* Kevin WatchKit App */,
 				D8CC2CF221D0A8A00058C1F6 /* Kevin WatchKit Extension */,
+				D81170DF21D689E7003E86CE /* KevinCam */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		D81170DE21D689E7003E86CE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D81170EA21D689E9003E86CE /* Assets.xcassets in Resources */,
+				D81170E821D689E8003E86CE /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D8CC2CD021D0A89C0058C1F6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -294,6 +356,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D81170DC21D689E7003E86CE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D81170E521D689E8003E86CE /* ViewController.swift in Sources */,
+				D81170EF21D68A1A003E86CE /* KevinBLE.swift in Sources */,
+				D81170E321D689E8003E86CE /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D8CC2CCE21D0A89C0058C1F6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -331,6 +403,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		D81170E621D689E8003E86CE /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D81170E721D689E8003E86CE /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		D8CC2CD921D0A89C0058C1F6 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -358,6 +438,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		D81170EC21D689E9003E86CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2Z2S6NCD7P;
+				INFOPLIST_FILE = KevinCam/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.standalonecode.KevinCam;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.1;
+			};
+			name = Debug;
+		};
+		D81170ED21D689E9003E86CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2Z2S6NCD7P;
+				INFOPLIST_FILE = KevinCam/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.standalonecode.KevinCam;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.1;
+			};
+			name = Release;
+		};
 		D8CC2CFF21D0A8A00058C1F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -595,6 +717,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D81170EE21D689E9003E86CE /* Build configuration list for PBXNativeTarget "KevinCam" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D81170EC21D689E9003E86CE /* Debug */,
+				D81170ED21D689E9003E86CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D8CC2CCD21D0A89C0058C1F6 /* Build configuration list for PBXProject "Kevin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
