@@ -48,8 +48,9 @@ class InterfaceController: WKInterfaceController {
   }
   
   @IBAction func toggleRelayAction() {
-    relayOn = !relayOn
-    kevin.writeRelayCharacteristic(relayOn)
+    if let newRelayValue = kevin.relayValue?.toggled() {
+      kevin.writeRelayCharacteristic(newRelayValue)
+    }
   }
   
   func registerForNotifications() {
@@ -90,7 +91,7 @@ class InterfaceController: WKInterfaceController {
       switch self.kevin.kevinPeripheral?.state {
       case .connected?:
         self.toggleRelayButton.setEnabled(true)
-        if let relayValue = self.kevin.relayValue, relayValue {
+        if let relayValue = self.kevin.relayValue, relayValue == .closed {
           self.toggleRelayButton.setTitle("Turn OFF")
         }
         else {

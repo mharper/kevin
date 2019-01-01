@@ -17,11 +17,11 @@ unsigned char relayControlUUID[] = {0x5E, 0x4D, 0x75, 0x3B,
 BLEService        relayService = BLEService(relayServiceUUID);
 BLECharacteristic relayControlCharacteristic = BLECharacteristic(relayControlUUID);
 
-#define RELAY_ON  (0x01)
-#define RELAY_OFF (0x00)
+#define RELAY_CLOSED  (0x01)
+#define RELAY_OPEN (0x00)
 #define RELAY_PIN A0
 
-uint8_t           relayState = RELAY_OFF;
+uint8_t           relayState = RELAY_OPEN;
 
 BLEDis bledis;    // DIS (Device Information Service) helper class instance
 
@@ -49,7 +49,7 @@ void setup() {
 
   // Initialize the output pin to the relay.
   pinMode(RELAY_PIN, OUTPUT);
-  setRelayState(RELAY_OFF);
+  setRelayState(RELAY_OPEN);
   
   // Set the advertised device name (keep it short!)
   Serial.println("Setting Device Name to 'KevinCam'");
@@ -116,7 +116,7 @@ void setupRelay(void)
 {
   relayService.begin();
 
-  relayControlCharacteristic.setProperties(CHR_PROPS_READ | CHR_PROPS_WRITE);
+  relayControlCharacteristic.setProperties(CHR_PROPS_READ | CHR_PROPS_NOTIFY | CHR_PROPS_WRITE);
   relayControlCharacteristic.setPermission(SECMODE_OPEN, SECMODE_OPEN);
   relayControlCharacteristic.setFixedLen(1);
   relayControlCharacteristic.setWriteCallback(write_relay_cb);
@@ -132,6 +132,7 @@ void connect_callback(uint16_t conn_handle)
 
   Serial.print("Connected to ");
   Serial.println(central_name);
+  updateRelayCharacteristicValue();
 }
 
 /**
@@ -145,11 +146,12 @@ void disconnect_callback(uint16_t conn_handle, uint8_t reason)
   (void) reason;
 
   Serial.println("Disconnected");
+  setRelayState(RELAY_OPEN);
 }
 
 void write_relay_cb(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t offset) {
   Serial.println("Relay data written");
-  Serial.println(data[0] ? "ON" : "OFF");
+  Serial.println(data[0] == RELAY_OPEN ? "OPEN" : "CLOSED");
   setRelayState(data[0]);
   updateRelayCharacteristicValue();
   
@@ -161,7 +163,9 @@ void cccd_write_relay_cb(BLECharacteristic& chr, uint16_t cccd_value) {
 }
 
 void updateRelayCharacteristicValue() {
-  relayControlCharacteristic.write8(relayState);
+  Serial.println("Notifying with current relay value");
+  Serial.println(relayState == RELAY_OPEN ? "OPEN" : "CLOSED");
+  relayControlCharacteristic.notify8(relayState);
 }
 
 void setRelayState(uint8_t newRelayState) {

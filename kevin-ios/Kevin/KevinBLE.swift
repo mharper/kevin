@@ -12,6 +12,18 @@ import CoreBluetooth
 let kevinServiceUUID = CBUUID(string: "A2F6EFEC-C2B1-7194-B247-7E5C3B754D5E")
 let kevinRelayCharacteristicUUID = CBUUID(string: "A2F6EFEC-0001-7194-B247-7E5C3B754D5E")
 
+enum RelayPosition : UInt8 {
+  case open = 0x00
+  case closed = 0x01
+  
+  func toggled() -> RelayPosition {
+    switch self {
+    case .open: return .closed
+    case .closed: return .open
+    }
+  }
+}
+
 class Kevin : NSObject, CBCentralManagerDelegate {
   static let shared = Kevin()
   
@@ -20,7 +32,7 @@ class Kevin : NSObject, CBCentralManagerDelegate {
   var centralManager: CBCentralManager!
   var kevinPeripheral: CBPeripheral?
   var relayCharacteristic: CBCharacteristic?
-  var relayValue: Bool?
+  var relayValue: RelayPosition?
   
   func centralManagerDidUpdateState(_ central: CBCentralManager) {
     switch central.state {
@@ -84,9 +96,9 @@ class Kevin : NSObject, CBCentralManagerDelegate {
     }
   }
   
-  func writeRelayCharacteristic(_ cameraOn: Bool) {
+  func writeRelayCharacteristic(_ relayPosition: RelayPosition) {
     if let characteristic = relayCharacteristic {
-      kevinPeripheral?.writeValue(Data(bytes:[cameraOn ? UInt8(1) : UInt8(0)]), for: characteristic, type: .withResponse)
+      kevinPeripheral?.writeValue(Data(bytes:[relayPosition.rawValue]), for: characteristic, type: .withResponse)
     }
   }
 }
@@ -100,12 +112,27 @@ extension Kevin : CBPeripheralDelegate {
   
   func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
     relayCharacteristic = service.characteristics?[0]
+    if let relayCharacteristic = relayCharacteristic {
+      peripheral.setNotifyValue(true, for: relayCharacteristic)
+    }
+  }
+  
+  func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
+    if error == nil, let relayCharacteristic = relayCharacteristic {
+      peripheral.readValue(for: relayCharacteristic)
+    }
   }
   
   func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-    if characteristic == relayCharacteristic {
-      NotificationCenter.default.post(name: .relayValueChanged, object: self, userInfo: [Kevin.relayValueKey : characteristic.value])
+    guard characteristic == relayCharacteristic,
+      let characteristicValue = characteristic.value,
+      characteristicValue.count > 0
+    else {
+      return
     }
+    let relayByte = characteristicValue[0]
+    NotificationCenter.default.post(name: .relayValueChanged, object: self, userInfo: [Kevin.relayValueKey : relayByte])
+    relayValue = RelayPosition(rawValue: relayByte)
   }
 }
 

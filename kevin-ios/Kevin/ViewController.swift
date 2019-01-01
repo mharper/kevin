@@ -13,8 +13,6 @@ class ViewController: UIViewController {
   @IBOutlet weak var toggleCameraButton: UIButton!
   @IBOutlet weak var connectDisconnectButton: UIButton!
   
-  var cameraOn = false
-  
   let kevin = Kevin.shared
   
   override func viewDidLoad() {
@@ -24,8 +22,9 @@ class ViewController: UIViewController {
   }
   
   @IBAction func toggleAction(_ sender: Any) {
-    cameraOn = !cameraOn
-    kevin.writeRelayCharacteristic(cameraOn)
+    if let newRelayValue = kevin.relayValue?.toggled() {
+      kevin.writeRelayCharacteristic(newRelayValue)
+    }
   }
   
   @IBAction func connectDisconnectAction(_ sender: Any) {
@@ -51,7 +50,10 @@ class ViewController: UIViewController {
       self.configureToggleButton()
     }
     notificationCenter.addObserver(forName: Notification.Name.relayValueChanged, object: nil, queue: nil) { (notification) in
+      if let relayValue = notification.userInfo?[Kevin.relayValueKey] {
+        NSLog("Relay value changed to: " + String(describing: relayValue))
         self.configureToggleButton()
+      }
     }
   }
   
@@ -78,7 +80,7 @@ class ViewController: UIViewController {
       switch self.kevin.kevinPeripheral?.state {
       case .connected?:
         self.toggleCameraButton.isEnabled = true
-        if let relayValue = self.kevin.relayValue, relayValue {
+        if let relayValue = self.kevin.relayValue, relayValue == .closed {
           self.toggleCameraButton.setTitle("Turn OFF", for: .normal)
         }
         else {
