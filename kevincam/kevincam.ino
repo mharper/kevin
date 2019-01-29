@@ -21,6 +21,8 @@ BLECharacteristic relayControlCharacteristic = BLECharacteristic(relayControlUUI
 #define RELAY_OPEN (0x00)
 #define RELAY_PIN A0
 
+#define MAX_TX_POWER (8)
+
 uint8_t           relayState = RELAY_OPEN;
 
 BLEDis bledis;    // DIS (Device Information Service) helper class instance
@@ -43,6 +45,16 @@ void setup() {
   // Disable automatic BLE connection status on LED.
   Bluefruit.autoConnLed(false);
 
+  // Crank up the transmit power to max.
+  int8_t txPower = Bluefruit.getTxPower();
+  Serial.print("Tx power is ");
+  Serial.println(txPower, DEC);
+  
+  if (Bluefruit.setTxPower(MAX_TX_POWER)) {
+    Serial.print("Tx power set to ");
+    Serial.println(MAX_TX_POWER, DEC);
+  }
+  
   // Create functioning blinky.
   ledBlinkTimer = xTimerCreate(NULL, ms2tick(CFG_ADV_BLINKY_INTERVAL/2), true, NULL, blinky_cb);
   xTimerStart(ledBlinkTimer, 0);
@@ -150,7 +162,7 @@ void disconnect_callback(uint16_t conn_handle, uint8_t reason)
 }
 
 void write_relay_cb(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t offset) {
-  Serial.println("Relay data written");
+  Serial.print("Relay data written: ");
   Serial.println(data[0] == RELAY_OPEN ? "OPEN" : "CLOSED");
   setRelayState(data[0]);
   updateRelayCharacteristicValue();
@@ -163,7 +175,7 @@ void cccd_write_relay_cb(BLECharacteristic& chr, uint16_t cccd_value) {
 }
 
 void updateRelayCharacteristicValue() {
-  Serial.println("Notifying with current relay value");
+  Serial.print("Notifying with current relay value: ");
   Serial.println(relayState == RELAY_OPEN ? "OPEN" : "CLOSED");
   relayControlCharacteristic.notify8(relayState);
 }
